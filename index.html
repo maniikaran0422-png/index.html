@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Princess 💖</title>
+
+<style>
+body{
+margin:0;
+overflow:hidden;
+font-family:system-ui;
+background:radial-gradient(circle,#2a0018,#000);
+color:white;
+text-align:center;
+}
+
+/* HEARTS */
+.heart{
+position:absolute;
+top:-10px;
+color:#ff4d6d;
+font-size:16px;
+animation:fall linear forwards;
+pointer-events:none;
+opacity:0.8;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+opacity:0;
+}
+}
+
+/* SCREEN */
+.screen{
+display:none;
+position:absolute;
+width:100%;
+height:100%;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:20px;
+box-sizing:border-box;
+}
+
+.active{display:flex;}
+
+/* CARD */
+.card{
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(10px);
+padding:22px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(255,0,100,0.3);
+max-width:92%;
+}
+
+/* TEXT */
+h1{
+font-size:28px;
+color:#ff4d8d;
+}
+
+p{
+font-size:15px;
+color:#ffd1dc;
+line-height:1.6;
+}
+
+/* BUTTON */
+button{
+margin-top:10px;
+padding:12px 22px;
+border:none;
+border-radius:25px;
+background:linear-gradient(45deg,#ff0055,#ff66a3);
+color:white;
+font-size:15px;
+}
+
+/* CAKE */
+.cake{font-size:85px;}
+
+/* GIFT */
+.gift{
+font-size:80px;
+cursor:pointer;
+animation:shake 1s infinite;
+}
+
+@keyframes shake{
+0%{transform:rotate(0);}
+25%{transform:rotate(5deg);}
+50%{transform:rotate(-5deg);}
+75%{transform:rotate(5deg);}
+100%{transform:rotate(0);}
+}
+
+/* OPENED */
+.openedText{
+color:red;
+font-size:22px;
+font-weight:bold;
+text-shadow:0 0 10px red;
+}
+
+/* FIREWORK */
+.firework{
+position:absolute;
+width:8px;
+height:8px;
+border-radius:50%;
+background:yellow;
+animation:boom 1s ease-out forwards;
+}
+
+@keyframes boom{
+0%{transform:scale(1);opacity:1;}
+100%{transform:scale(14);opacity:0;}
+}
+
+/* MESSAGE FIX */
+#msg{
+font-size:16px;
+line-height:1.8;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SCREEN 1 -->
+<div class="screen active" id="s1">
+<div class="card">
+<h1>💖 Happy Birthday Princess</h1>
+<button onclick="next(2)">Start</button>
+</div>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen" id="s2">
+<div class="card">
+<h1>✨ Aaj tumhara special day hai</h1>
+<button onclick="next(3)">Next</button>
+</div>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen" id="s3">
+<div class="card">
+<h1 id="candle">🕯️ Blow Candle</h1>
+<button onclick="blow()">Blow</button>
+</div>
+</div>
+
+<!-- SCREEN 4 -->
+<div class="screen" id="s4">
+<div class="card">
+<h1>💗 Make a Wish Princess</h1>
+<button onclick="next(4.5)">Next</button>
+</div>
+</div>
+
+<!-- SCREEN 4.5 -->
+<div class="screen" id="s4.5">
+<div class="card">
+<h1>💖 Wish Me</h1>
+<p>mujhe maanga nhh darlingg 💖 aapne</p>
+
+<div id="ans" style="color:#ff4d8d;font-size:18px;">Do you wish me? 💕</div>
+
+<button onclick="yes()">YES 💖</button>
+<button onclick="no()" style="background:#444;">NO 💔</button>
+
+</div>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen" id="s5">
+<div class="card">
+<div id="gift" class="gift" onclick="openGift()">🎁</div>
+<p>Tap gift</p>
+</div>
+</div>
+
+<!-- SCREEN 6 -->
+<div class="screen" id="s6">
+<div class="card">
+<div class="cake">🎂</div>
+<h1>🎉 Happy Birthday 🎉</h1>
+<button onclick="fireworks();next(7)">Message 💌</button>
+</div>
+</div>
+
+<!-- SCREEN 7 -->
+<div class="screen" id="s7">
+<div class="card">
+<div id="msg"></div>
+</div>
+</div>
+
+<script>
+
+/* HEARTS */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(12+Math.random()*18)+"px";
+h.style.animationDuration=(3+Math.random()*4)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),7000);
+},220);
+
+/* SCREEN SWITCH */
+function next(n){
+for(let i=1;i<=8;i++){
+let s=document.getElementById("s"+i);
+if(s) s.classList.remove("active");
+}
+document.getElementById("s"+n).classList.add("active");
+
+if(n==7) startTyping();
+}
+
+/* CANDLE */
+function blow(){
+document.getElementById("candle").style.opacity="0";
+setTimeout(()=>next(4),1000);
+}
+
+/* GIFT */
+function openGift(){
+let g=document.getElementById("gift");
+g.classList.remove("gift");
+g.innerHTML="🎉 OPENED";
+g.classList.add("openedText");
+setTimeout(()=>next(6),1200);
+}
+
+/* FIREWORKS */
+function fireworks(){
+for(let i=0;i<25;i++){
+let f=document.createElement("div");
+f.className="firework";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+}
+
+/* PRANK YES/NO */
+function yes(){
+document.getElementById("ans").innerHTML="Aww 💖 You said YES 😍";
+setTimeout(()=>next(5),1200);
+}
+
+function no(){
+let ans=document.getElementById("ans");
+ans.innerHTML="NO? 😏";
+setTimeout(()=>ans.innerHTML="But it's YES 💖",800);
+setTimeout(()=>ans.innerHTML="Auto YES ✨",1600);
+setTimeout(()=>next(5),2200);
+}
+
+/* 💖 FINAL MESSAGE (FIXED CLEAN VERSION) */
+let message = [
+{ text:"🎂 Happy Birthday 🎂", color:"#00ff7f" },
+{ text:"Aaj ka din bahut special hai ✨", color:"#ffd700" },
+{ text:"Main bas itna kehna chahta hu ki tum hamesha khush raho ❤️", color:"#ff4d8d" },
+{ text:"Kabhi-kabhi kuch log dil ke kareeb aa jaate hain 🌹", color:"#00ff7f" },
+{ text:"Aaj sirf smiles aur happiness honi chahiye 🎈", color:"#ffd700" },
+{ text:"May all your dreams come true ✨", color:"#ff4d8d" },
+{ text:"🎁 You Are Special 🎁", color:"#00ff7f" },
+{ text:"🎂 Happy Birthday Once Again 🎂", color:"#ffd700" }
+];
+
+let i=0;
+
+function startTyping(){
+document.getElementById("msg").innerHTML="";
+i=0;
+typeWriter();
+}
+
+function typeWriter(){
+if(i < message.length){
+let line=document.createElement("div");
+line.innerText=message[i].text;
+line.style.color=message[i].color;
+line.style.margin="10px 0";
+
+document.getElementById("msg").appendChild(line);
+i++;
+setTimeout(typeWriter,800);
+}
+}
+
+</script>
+
+</body>
+</html>
